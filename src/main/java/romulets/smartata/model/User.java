@@ -15,10 +15,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user")
@@ -35,6 +39,7 @@ public class User {
 	private String email;
 
 	@Transient
+	@JsonIgnore
 	@Column(name = "password")
 	@Length(min = 5, message = "*Your password must have at least 5 characters")
 	@NotEmpty(message = "*Please provide your password")
@@ -51,15 +56,21 @@ public class User {
 	@Column(name = "active")
 	private int active;
 	
+	@JsonIgnore
+	@LazyCollection(LazyCollectionOption.TRUE)
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
+	@JsonIgnore
+	@LazyCollection(LazyCollectionOption.TRUE)
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "favorite_topics", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "topic_id"))
 	private Set<Topic> favoriteTopics;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="createdBy", fetch = FetchType.LAZY)
+
+	@JsonIgnore
+	@LazyCollection(LazyCollectionOption.TRUE)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "createdBy", fetch = FetchType.LAZY)
 	private Set<Topic> createdTopics;
 
 	public int getId() {

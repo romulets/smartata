@@ -24,7 +24,7 @@ public class Tag {
 	}
 
 	public void setKey(String key) {		
-		this.key = key;
+		this.key = normalizeKey(key);
 	}
 	
 	public String getName() {
@@ -32,7 +32,16 @@ public class Tag {
 	}
 
 	public void setName(String name) {
+		setKey(name);
+		
 		this.name = name;
+	}
+	
+	private String normalizeKey(String key) {
+		key = key.replaceAll("[^a-zA-Z0-9 ]+", "");
+		key = key.replaceAll("[ ]+", "-");
+		key = key.toLowerCase();
+		return key;
 	}
 	
 }

@@ -38,10 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
+		/* @TODO REMOVE THIS WHEN START TO USE WEB CLIENT */
+		http.csrf().disable();
+		
 		http
 			.authorizeRequests()
 			.antMatchers("/").permitAll()
-			.antMatchers("/login").permitAll()
+			/*.antMatchers("/login").permitAll()
 			.antMatchers("/registration").permitAll()
 			.antMatchers("/admin/**")
 			.hasAuthority("ADMIN")
@@ -56,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.logoutSuccessUrl("/")
 			.and()
 			.exceptionHandling()
-			.accessDeniedPage("/access-denied");
+			.accessDeniedPage("/access-denied")*/;
 	}
 
 	@Override

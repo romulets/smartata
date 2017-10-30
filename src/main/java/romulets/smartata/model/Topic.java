@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -40,7 +41,7 @@ public class Topic {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at")
-	@NotEmpty
+	@NotNull
 	private Date createdAt;
 	
 	@Temporal(TemporalType.TIMESTAMP)
