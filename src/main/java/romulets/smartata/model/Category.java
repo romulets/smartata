@@ -12,16 +12,16 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "category")
 public class Category {
-	
+
 	@Id
 	@Column(name = "category_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
+
 	@Column(name = "name")
 	@NotEmpty(message = "*Please provide a category name")
 	private String name;
-	
+
 	@Column(name = "description")
 	private String description;
 
@@ -48,5 +48,5 @@ public class Category {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 }

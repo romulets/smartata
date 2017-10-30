@@ -30,32 +30,32 @@ public class Topic {
 	@Column(name = "topic_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
+
 	@Column(name = "title")
 	@NotEmpty(message = "*Please provide a topic title")
 	private String title;
-	
+
 	@Lob
 	@Column(name = "content")
 	private String content;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at")
 	@NotNull
 	private Date createdAt;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at")
 	private Date updatedAt;
-	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "created_by")
 	private User createdBy;
-	
+
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id")
 	private Category category;
-	
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "topic_tag", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "tag_key"))
 	private Set<Tag> tags;
@@ -123,5 +123,5 @@ public class Topic {
 	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
 	}
-	
+
 }

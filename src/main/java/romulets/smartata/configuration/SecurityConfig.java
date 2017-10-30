@@ -5,13 +5,17 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import romulets.smartata.filter.JWTAuthenticationFilter;
+import romulets.smartata.filter.JWTLoginFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -37,29 +41,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
-		/* @TODO REMOVE THIS WHEN START TO USE WEB CLIENT */
-		http.csrf().disable();
-		
-		http
+		http.csrf().disable()
 			.authorizeRequests()
-			.antMatchers("/").permitAll()
-			/*.antMatchers("/login").permitAll()
-			.antMatchers("/registration").permitAll()
-			.antMatchers("/admin/**")
-			.hasAuthority("ADMIN")
+			.antMatchers(HttpMethod.POST, "/api/user").permitAll()
+			.antMatchers(HttpMethod.POST, "/api/login").permitAll()
 			.anyRequest().authenticated()
-			.and().csrf().disable()
-			.formLogin().loginPage("/login")
-			.failureUrl("/login?error=true")
-			.defaultSuccessUrl("/admin/home")
-			.usernameParameter("email")
-			.passwordParameter("password").and()
-			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-			.logoutSuccessUrl("/")
 			.and()
-			.exceptionHandling()
-			.accessDeniedPage("/access-denied")*/;
+			.addFilterBefore(new JWTLoginFilter("/api/login", authenticationManager()), 
+					UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new JWTAuthenticationFilter(),
+					UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override

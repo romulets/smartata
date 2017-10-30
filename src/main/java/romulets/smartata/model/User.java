@@ -55,7 +55,7 @@ public class User {
 
 	@Column(name = "active")
 	private int active;
-	
+
 	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.TRUE)
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
