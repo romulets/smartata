@@ -17,7 +17,6 @@ import romulets.smartata.model.User;
 import romulets.smartata.repository.CategoryRepository;
 import romulets.smartata.repository.TagRepository;
 import romulets.smartata.repository.TopicRepository;
-import romulets.smartata.repository.UserRepository;
 
 @Service("topicService")
 public class TopicServiceImpl implements TopicService {
@@ -26,7 +25,7 @@ public class TopicServiceImpl implements TopicService {
 	private TopicRepository topicRepo;
 	
 	@Autowired
-	private UserRepository userRepo;
+	private UserService userService;
 	
 	@Autowired
 	private TagRepository tagRepo;
@@ -46,7 +45,7 @@ public class TopicServiceImpl implements TopicService {
 
 	@Override
 	public List<Topic> findByUser(int id) {
-		User user = userRepo.getOne(id);
+		User user = userService.findById(id);
 		return topicRepo.createdBy(user);
 	}
 
@@ -73,9 +72,9 @@ public class TopicServiceImpl implements TopicService {
 			throw new EntityAlreadyExistException("topic", new Integer(topic.getId()));
 		
 		refreshCategory(topic);
-		refreshUser(topic);
 		refreshTags(topic);
 		topic.setCreatedAt(new Date());
+		topic.setCreatedBy(userService.getLoggedUser());
 		
 		topicRepo.save(topic);
 	}
@@ -111,14 +110,6 @@ public class TopicServiceImpl implements TopicService {
 		
 		Category cat = categoryRepo.getOne(topic.getCategory().getId());
 		topic.setCategory(cat);
-	}
-	
-	private void refreshUser(Topic topic) {
-		if (topic.getCreatedBy() == null)
-			return;
-		
-		User user = userRepo.getOne(topic.getCreatedBy().getId());
-		topic.setCreatedBy(user);
 	}
 	
 	private void refreshTags(Topic topic) {

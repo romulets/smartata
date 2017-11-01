@@ -1,9 +1,8 @@
 package romulets.smartata.configuration;
 
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,11 +10,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import romulets.smartata.filter.JWTAuthenticationFilter;
-import romulets.smartata.filter.JWTLoginFilter;
+import romulets.smartata.security.JWTAuthenticationFilter;
+import romulets.smartata.security.JWTAuthorizationFilter;
+import romulets.smartata.service.UserService;
+
+import static romulets.smartata.security.SecurityConstants.SIGN_UP_URL;
 
 @Configuration
 @EnableWebSecurity
@@ -25,37 +30,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
-	private DataSource dataSource;
+	private UserService userService;
 
-	@Value("${spring.queries.users-query}")
-	private String usersQuery;
-
-	@Value("${spring.queries.roles-query}")
-	private String rolesQuery;
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesQuery)
-				.dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		 auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
-			.authorizeRequests()
-			.antMatchers(HttpMethod.POST, "/api/user").permitAll()
-			.antMatchers(HttpMethod.POST, "/api/login").permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.addFilterBefore(new JWTLoginFilter("/api/login", authenticationManager()), 
-					UsernamePasswordAuthenticationFilter.class)
-			.addFilterBefore(new JWTAuthenticationFilter(),
-					UsernamePasswordAuthenticationFilter.class);
+		 http.cors().and().csrf().disable().authorizeRequests()
+         .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+         .anyRequest().authenticated()
+         .and()
+         .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+         .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+         // this disables session creation on Spring Security
+         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
 	}
+	
+	 @Bean
+	 protected CorsConfigurationSource corsConfigurationSource() {
+	   final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	   source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+	   return source;
+	 }
 
 }

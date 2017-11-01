@@ -33,13 +33,17 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@Column(name = "email")
+	@Column(name = "email", unique = true)
 	@Email(message = "*Please provide a valid Email")
 	@NotEmpty(message = "*Please provide an email")
 	private String email;
 
+	@Column(name = "username", unique = true)
+	@NotEmpty(message = "*Please provide an username")
+	@Length(min = 3, message = "*Your username must have at least 3 characters")
+	private String username;
+
 	@Transient
-	@JsonIgnore
 	@Column(name = "password")
 	@Length(min = 5, message = "*Your password must have at least 5 characters")
 	@NotEmpty(message = "*Please provide your password")
@@ -95,6 +99,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getName() {
