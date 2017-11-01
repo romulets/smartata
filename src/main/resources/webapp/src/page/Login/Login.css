@@ -1,0 +1,14 @@
+.login {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.login-header {
+  margin: 0px;
+  background: #ccc;
+}
+
+.login-body {
+  padding: 20px;
+}
