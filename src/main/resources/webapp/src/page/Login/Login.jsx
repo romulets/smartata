@@ -7,6 +7,8 @@ import Snackbar from 'material-ui/Snackbar'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 
+import { LOGIN_URL } from '../../helper/UrlHelper'
+
 import '../../ui/style/Box.css'
 
 class Login extends Component {
@@ -14,7 +16,6 @@ class Login extends Component {
   constructor (props) {
     super(props)
 
-    this.LOGIN_URL = '/smartata/api/login'
     this.handleMethodsBinds()
 
     this.state = {
@@ -35,7 +36,7 @@ class Login extends Component {
   componentDidMount () {
     const { cookies } = this.props
 
-    if (cookies.get('authenticationToken')) {
+    if (cookies.get('authorizationToken')) {
       this.setState({
         successfullAuthentication: true
       })
@@ -46,7 +47,7 @@ class Login extends Component {
     const { cookies } = this.props
     const { credentials } = this.state
 
-    fetch(this.LOGIN_URL, this.mountRequestParams(credentials))
+    fetch(LOGIN_URL, this.mountRequestParams(credentials))
       .then(response => {
         if (response.status === 200) {
           return response.headers.get('Authorization')
@@ -54,7 +55,7 @@ class Login extends Component {
           throw response
         }
       })
-      .then(token => cookies.set('authenticationToken', token))
+      .then(token => cookies.set('authorizationToken', token))
       .then(r => this.setState({
         successfullAuthentication: true
       }))

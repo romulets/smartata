@@ -20,7 +20,7 @@ public class UserController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public User getLogged() {
-		return new User();
+		return userService.getLoggedUser();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

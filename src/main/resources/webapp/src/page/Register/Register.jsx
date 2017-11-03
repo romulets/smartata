@@ -11,12 +11,13 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 import '../../ui/style/Box.css'
 
+import { USER_URL } from '../../helper/UrlHelper'
+
 class Register extends Component {
 
   constructor (props) {
     super(props)
 
-    this.REGISTER_URL = '/smartata/api/users'
     this.handleMethodsBinds()
 
     this.state = {
@@ -43,7 +44,7 @@ class Register extends Component {
   componentDidMount () {
     const { cookies } = this.props
 
-    if (cookies.get('authenticationToken')) {
+    if (cookies.get('authorizationToken')) {
       this.setState({
         successfullAuthentication: true
       })
@@ -53,7 +54,7 @@ class Register extends Component {
   submit () {
     const { user } = this.state
 
-    fetch(this.REGISTER_URL, this.mountRequestParams(user))
+    fetch(USER_URL, this.mountRequestParams(user))
       .then(response => {
         if (response.status === 200) {
           return response

@@ -1,0 +1,38 @@
+.collapsed-topic {
+  position: relative;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  height: 100px
+}
+
+.collapsed-topic:hover {
+  background: #eee
+}
+
+.ct-title {
+  font-weight: 500;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.ct-category {
+  font-size: 0.8em
+}
+
+a .ct-title:hover, a .ct-category:hover {
+  text-decoration: underline;
+}
+
+.ct-side-bar {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.ct-body {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 50px;
+}

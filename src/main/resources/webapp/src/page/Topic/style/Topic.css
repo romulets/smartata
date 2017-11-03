@@ -1,0 +1,23 @@
+.topic-category {
+  margin: 0px;
+  font-weight: 400;
+}
+
+.topic-category:hover {
+  text-decoration: underline;
+}
+
+.topic-title {
+  position: relative;
+}
+
+.topic-title .topic-title-text {
+  position: relative;
+  left: 30px;
+}
+
+.topic-title .topic-back {
+  position: absolute;
+  top: 5px;
+  cursor: pointer;
+}

@@ -3,9 +3,7 @@ import React, { Component } from 'react'
 import SideBar from '../../ui/SideBar'
 import CollapsedTopic from '../../ui/CollapsedTopic'
 
-import TopicService from '../../service/TopicService'
-
-class AllTopics extends Component {
+class Favorites extends Component {
 
   constructor (props) {
     super(props)
@@ -15,22 +13,13 @@ class AllTopics extends Component {
     }
   }
 
-  componentDidMount () {
-    this.getTopics()
-  }
-
-  getTopics () {
-    TopicService.getAllTopics()
-      .then(topics => this.setState({ topics }))
-  }
-
   render () {
     return (
       <div>
         <SideBar />
 
         <div className='container-right'>
-          <h2>Todos os Tópicos</h2>
+          <h2>Favoritos</h2>
 
           { this.state.topics.map(t => <CollapsedTopic topic={t} key={t.id} />) }
         </div>
@@ -40,4 +29,4 @@ class AllTopics extends Component {
 
 }
 
-export default AllTopics
+export default Favorites
