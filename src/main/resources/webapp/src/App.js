@@ -5,6 +5,7 @@ import { CookiesProvider } from 'react-cookie'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import Login from './page/Login/Login'
+import Register from './page/Register/Register'
 import AllTopics from './page/Topic/AllTopics'
 
 import './App.css'
@@ -17,7 +18,8 @@ class App extends Component {
         <MuiThemeProvider>
           <Router>
             <div>
-              <Route path='/' component={Login} />
+              <Route exact path='/' component={Login} />
+              <Route path='/register' component={Register} />
               <Route path='/topics' component={AllTopics} />
             </div>
           </Router>

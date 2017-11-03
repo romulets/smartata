@@ -1,0 +1,23 @@
+.box {
+  max-width: 600px;
+  margin: 20px auto;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+}
+
+.box-header {
+  margin: 0px;
+  background: rgb(0, 188, 212);
+  padding: 10px;
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: normal;
+  text-decoration: blink;
+}
+
+.box-body {
+  padding: 20px;
+}
+
+.box-button {
+  margin-top: 10px;
+}

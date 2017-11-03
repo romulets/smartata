@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 
 import { withCookies } from 'react-cookie'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 
-import AppBar from 'material-ui/AppBar'
 import Snackbar from 'material-ui/Snackbar'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 
-import './Login.css'
+import '../../ui/style/Box.css'
 
 class Login extends Component {
 
@@ -100,14 +99,13 @@ class Login extends Component {
 
     return (
       <div>
-        <AppBar title='Smartata' />
-
         <div className='container'>
-          <div className='login'>
 
-            <h1 className='login-header'> Login </h1>
+          <div className='box'>
 
-            <div className='login-body'>
+            <h1 className='box-header'> Login Smartata </h1>
+
+            <div className='box-body'>
 
               <form onSubmit={this.submit}>
 
@@ -126,12 +124,20 @@ class Login extends Component {
 
                 <RaisedButton
                   label='Entrar'
-                  primary
+                  secondary
                   fullWidth
-                  className='login-button'
+                  className='box-button'
                   onClick={this.submit} />
 
               </form>
+
+              <p className='text-center'>Ou</p>
+
+              <Link to='/register'>
+                <RaisedButton
+                  label='Criar Novo Cadastro'
+                  fullWidth />
+              </Link>
 
             </div>
 
