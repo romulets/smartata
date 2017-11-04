@@ -29,12 +29,8 @@ export default class UserService {
     return fetch(USER_URL, this._auth.getGetHeader())
       .then(r => {
         if (r.status === 200) return r.json()
-        throw r.json()
-      })
-      .catch(user => {
-        this._invalid = true
         throw new Error('Could not retrieve user')
-       })
+      })
       .then(user => {
         this._user = user
         return user

@@ -1,0 +1,12 @@
+.fab-bar {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.fab-add-topic:hover::before {
+  content: 'Adicionar T\F3pico';
+  position: absolute;
+  right: 65px;
+  top: 5px;
+}

@@ -1,0 +1,28 @@
+.topic-form {
+  width: 400px;
+  padding-right: 20px;
+  display: inline-block;
+  vertical-align:top;
+  position: absolute;
+}
+
+.topic-preview {
+  padding-left: 20px;
+  padding-right: 10px;
+  display: inline-block;
+  position: absolute;
+  left: 420px;
+}
+
+.topic-submit {
+  margin-top: 20px;
+}
+
+.foot-note {
+  font-size: 0.6em;
+  color: #3d55d8;
+}
+
+.foot-note:hover {
+  text-decoration: underline;
+}

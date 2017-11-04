@@ -22,4 +22,20 @@ export default class TopicService {
             })
   }
 
+  static postTopic(topic) {
+    return fetch(TOPIC_URL, this._auth.getPostHeader(topic))
+            .then(r => {
+              if (r.status === 200) return r.json()
+              throw r.json()
+            })
+  }
+
+  static putTopic(id, topic) {
+    return fetch(TOPIC_URL + '/' + id, this._auth.getPutHeader(topic))
+            .then(r => {
+              if (r.status === 200) return r.json()
+              throw r.json()
+            })
+  }
+
 }

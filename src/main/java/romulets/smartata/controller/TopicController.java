@@ -45,14 +45,16 @@ public class TopicController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void create(@RequestBody Topic topic) {
+	public Topic create(@RequestBody Topic topic) {
 		topicService.create(topic);
+		return topicService.findById(topic.getId());
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable("id") int id, @RequestBody Topic topic) {
+	public Topic update(@PathVariable("id") int id, @RequestBody Topic topic) {
 		topic.setId(id);
 		topicService.update(topic);
+		return topicService.findById(topic.getId());
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

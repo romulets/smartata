@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import FABBar from '../../ui/FABBar'
 import SideBar from '../../ui/SideBar'
 import CollapsedTopic from '../../ui/CollapsedTopic'
 
@@ -23,6 +24,8 @@ class Favorites extends Component {
 
           { this.state.topics.map(t => <CollapsedTopic topic={t} key={t.id} />) }
         </div>
+
+        <FABBar />
       </div>
     )
   }

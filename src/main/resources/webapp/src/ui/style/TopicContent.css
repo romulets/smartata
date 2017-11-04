@@ -1,0 +1,7 @@
+.topic-content h1,
+.topic-content h2,
+.topic-content h3,
+.topic-content h4,
+.topic-content strong {
+  font-weight: 500
+}

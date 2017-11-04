@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 
-import { markdown } from 'markdown'
 import { Link } from 'react-router-dom'
 import CircularProgress from 'material-ui/CircularProgress'
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back'
 
-import SideBar from '../../ui/SideBar'
 import Tag from '../../ui/Tag'
+import FABBar from '../../ui/FABBar'
+import SideBar from '../../ui/SideBar'
+import TopicContent from '../../ui/TopicContent'
 
 import TopicService from '../../service/TopicService'
 
@@ -43,6 +44,8 @@ class Topic extends Component {
             ? <CircularProgress size={80} thickness={5} />
           : this.renderPageBody(topic) }
         </div>
+
+        <FABBar />
       </div>
     )
   }
@@ -69,11 +72,7 @@ class Topic extends Component {
           { topic.tags.map(t => <Tag key={t.key} tag={t} />) }
         </div>
 
-        <div
-          className='topic-content'
-          dangerouslySetInnerHTML={{
-            __html: markdown.toHTML(topic.content)
-          }} />
+        <TopicContent content={topic.content} />
       </div>
     )
   }

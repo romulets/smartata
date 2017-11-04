@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import romulets.smartata.exception.EntityAlreadyExistException;
 import romulets.smartata.exception.EntityNotFoundException;
+import romulets.smartata.exception.SmartataException;
 import romulets.smartata.model.Category;
 import romulets.smartata.model.Tag;
 import romulets.smartata.model.Topic;
@@ -83,6 +84,10 @@ public class TopicServiceImpl implements TopicService {
 	public void update(Topic topic) {
 		if (topicExists(topic.getId()))
 			throw new EntityNotFoundException("topic", new Integer(topic.getId()));
+		
+		if (topic.getCreatedBy().getUsername() != userService.getLoggedUser().getUsername()) {
+			throw new SmartataException("Topic not owned by logged user"); 
+		}
 		
 		topic.setUpdatedAt(new Date());
 		refreshCategory(topic);

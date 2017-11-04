@@ -49,8 +49,9 @@ class Login extends Component {
 
     fetch(LOGIN_URL, this.mountRequestParams(credentials))
       .then(response => {
-        if (response.status === 200) {
-          return response.headers.get('Authorization')
+        const token = response.headers.get('Authorization')
+        if (response.status === 200 && token) {
+          return token
         } else {
           throw response
         }

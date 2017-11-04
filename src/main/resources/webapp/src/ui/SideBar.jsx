@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 
 import Avatar from 'material-ui/Avatar'
 import Divider from 'material-ui/Divider'
+import {List, ListItem} from 'material-ui/List'
 import { NavLink, Redirect } from 'react-router-dom'
 import ActionGrade from 'material-ui/svg-icons/action/grade'
 import ContentSend from 'material-ui/svg-icons/content/send'
 import ContentInbox from 'material-ui/svg-icons/content/inbox'
-import {List, ListItem} from 'material-ui/List'
+import ActionExit from 'material-ui/svg-icons/action/exit-to-app'
 
 import UserService from '../service/UserService'
 
@@ -37,7 +38,7 @@ export default class SideBar extends Component {
 
   render () {
     if (this.state.redirectToLogin) {
-      return <Redirect to='/' />
+      return <Redirect to='/logout' />
     }
 
     return (
@@ -71,6 +72,12 @@ export default class SideBar extends Component {
             <ListItem
               primaryText='Publicados'
               leftIcon={<ContentSend />} />
+          </NavLink>
+
+          <NavLink to='/logout' activeClassName='selected'>
+            <ListItem
+              primaryText='Sair'
+              leftIcon={<ActionExit />} />
           </NavLink>
         </List>
       </div>

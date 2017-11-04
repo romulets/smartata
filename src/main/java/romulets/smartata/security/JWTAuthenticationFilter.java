@@ -74,6 +74,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     		AuthenticationException failed) throws IOException, ServletException {
     	JSONObject object = new JSONObject();
 		object.append("message", failed.getMessage());
+		
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		response.getWriter().append(object.toString());	
     }
 }

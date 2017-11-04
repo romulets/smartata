@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { CookiesProvider } from 'react-cookie'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import Login from './page/Login/Login'
 import Topic from './page/Topic/Topic'
+import Logout from './page/Login/Logout'
+import AddTopic from './page/Topic/AddTopic'
 import Register from './page/Register/Register'
 import AllTopics from './page/Topic/AllTopics'
 import Favorites from './page/Topic/Favorites'
@@ -20,14 +22,17 @@ class App extends Component {
       <CookiesProvider>
         <MuiThemeProvider>
           <Router>
-            <div>
+            <Switch>
               <Route exact path='/' component={Login} />
-              <Route path='/topic/:id' component={Topic} />
-              <Route path='/topics' component={AllTopics} />
+              <Route path='/logout' component={Logout} />
               <Route path='/register' component={Register} />
+              <Route path='/topic/add' component={AddTopic} />
               <Route path='/favorites' component={Favorites} />
               <Route path='/published' component={Published} />
-            </div>
+              <Route exact path='/topics' component={AllTopics} />
+
+              <Route path='/topic/:id' component={Topic} />
+            </Switch>
           </Router>
         </MuiThemeProvider>
       </CookiesProvider>
