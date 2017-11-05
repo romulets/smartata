@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import PropTypes from 'prop-types'
 import Snackbar from 'material-ui/Snackbar'
 import MenuItem from 'material-ui/MenuItem'
 import { Redirect } from 'react-router-dom'
@@ -22,11 +23,9 @@ class TopicForm extends Component {
     super(props)
     this.handleMethodsBinds()
 
-    this.state = {
-      actionFinished: false,
-      showErrorSnackbar: false,
-      categories: [],
-      topic: {
+    let topic
+    if (this.props.topic === undefined) {
+      topic = {
         title: null,
         content: null,
         tags: [],
@@ -34,6 +33,15 @@ class TopicForm extends Component {
           id: null
         }
       }
+    } else {
+      topic = this.props.topic
+    }
+
+    this.state = {
+      actionFinished: false,
+      showErrorSnackbar: false,
+      categories: [],
+      topic
     }
   }
 
@@ -105,8 +113,7 @@ class TopicForm extends Component {
     promise.then(topic => this.setState({
       topic,
       actionFinished: true
-    }))
-        .catch(() => this.setState({showErrorSnackbar: true}))
+    })).catch(() => this.setState({showErrorSnackbar: true}))
   }
 
   render () {
@@ -128,6 +135,7 @@ class TopicForm extends Component {
             <form onSubmit={this.submit}>
               <TextField
                 name='title'
+                defaultValue={topic.title}
                 floatingLabelText='Titulo'
                 onChange={this.handleTopicChange}
                 fullWidth />
@@ -152,6 +160,7 @@ class TopicForm extends Component {
 
               <TextField
                 name='tags'
+                defaultValue={topic.tags.map(t => t.name).join(' ')}
                 floatingLabelText='Tags'
                 onChange={this.handleTagsChange}
                 fullWidth />
@@ -162,6 +171,7 @@ class TopicForm extends Component {
 
               <TextField
                 name='content'
+                defaultValue={topic.content}
                 floatingLabelText='Conteúdo'
                 multiLine
                 onChange={this.handleTopicChange}
@@ -169,7 +179,10 @@ class TopicForm extends Component {
 
               <br />
 
-              <a className='foot-note' target='_blank' href='https://guides.github.com/features/mastering-markdown/'>
+              <a className='foot-note'
+                target='_blank'
+                rel='noopener noreferrer'
+                href='https://guides.github.com/features/mastering-markdown/'>
                 Github markdown style
               </a>
 
@@ -197,6 +210,10 @@ class TopicForm extends Component {
     )
   }
 
+}
+
+TopicForm.propTypes = {
+  topic: PropTypes.object
 }
 
 export default TopicForm

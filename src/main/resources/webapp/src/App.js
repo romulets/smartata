@@ -8,6 +8,7 @@ import Login from './page/Login/Login'
 import Topic from './page/Topic/Topic'
 import Logout from './page/Login/Logout'
 import AddTopic from './page/Topic/AddTopic'
+import EditTopic from './page/Topic/EditTopic'
 import Register from './page/Register/Register'
 import AllTopics from './page/Topic/AllTopics'
 import Favorites from './page/Topic/Favorites'
@@ -31,6 +32,7 @@ class App extends Component {
               <Route path='/published' component={Published} />
               <Route exact path='/topics' component={AllTopics} />
 
+              <Route path='/topic/edit/:id' component={EditTopic} />
               <Route path='/topic/:id' component={Topic} />
             </Switch>
           </Router>

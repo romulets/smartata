@@ -82,23 +82,27 @@ public class TopicServiceImpl implements TopicService {
 
 	@Override
 	public void update(Topic topic) {
-		if (topicExists(topic.getId()))
-			throw new EntityNotFoundException("topic", new Integer(topic.getId()));
+		Topic oldTopic = findById(topic.getId());
 		
-		if (topic.getCreatedBy().getUsername() != userService.getLoggedUser().getUsername()) {
+		if (oldTopic == null){
+			throw new EntityNotFoundException("topic", new Integer(topic.getId()));
+		}			
+		
+		if (oldTopic.getCreatedBy().getUsername() != userService.getLoggedUser().getUsername()) {
 			throw new SmartataException("Topic not owned by logged user"); 
 		}
 		
-		topic.setUpdatedAt(new Date());
 		refreshCategory(topic);
 		refreshTags(topic);
+		topic.setUpdatedAt(new Date());
+		topic.setCreatedBy(oldTopic.getCreatedBy());
 		
 		topicRepo.save(topic);
 	}
 
 	@Override
 	public void delete(int id) {
-		if (topicExists(id))
+		if (!topicExists(id))
 			throw new EntityNotFoundException("topic", new Integer(id));
 		
 		topicRepo.delete(id);

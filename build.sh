@@ -1,5 +1,5 @@
 #!/bin/bash
 
-mvn install
+mvn clean install
 
 cp target/smartata.war /opt/tomcat/webapps/

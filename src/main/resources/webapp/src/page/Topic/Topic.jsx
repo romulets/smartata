@@ -10,6 +10,7 @@ import SideBar from '../../ui/SideBar'
 import TopicContent from '../../ui/TopicContent'
 
 import TopicService from '../../service/TopicService'
+import UserService from '../../service/UserService'
 
 import './style/Topic.css'
 
@@ -19,7 +20,8 @@ class Topic extends Component {
     super(props)
 
     this.state = {
-      topic: undefined
+      allowEdition: false,
+      topic: {}
     }
   }
 
@@ -29,7 +31,13 @@ class Topic extends Component {
 
   getTopic () {
     const { id } = this.props.match.params
-    TopicService.getTopic(id).then(topic => this.setState({ topic }))
+    TopicService.getTopic(id)
+    .then(topic => {
+      UserService.getUser().then(u => this.setState({
+        topic,
+        allowEdition: topic.createdBy.id === u.id
+      }))
+    })
   }
 
   render () {
@@ -40,12 +48,12 @@ class Topic extends Component {
         <SideBar />
 
         <div className='container-right'>
-          { topic === undefined
+          { topic.id === undefined
             ? <CircularProgress size={80} thickness={5} />
           : this.renderPageBody(topic) }
         </div>
 
-        <FABBar />
+        <FABBar editMode={this.state.allowEdition} topicId={topic.id || -1} />
       </div>
     )
   }

@@ -46,7 +46,8 @@ export default class AuthorizationHelper {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': this.token
+        'Authorization': this.token,
+        'Origin': window.location.origin
       }
     }
   }
@@ -56,7 +57,8 @@ export default class AuthorizationHelper {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
-        'Authorization': this.token
+        'Authorization': this.token,
+        'Origin': window.location.origin
       }
     }
   }

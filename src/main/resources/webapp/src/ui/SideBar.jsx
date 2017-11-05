@@ -47,10 +47,17 @@ export default class SideBar extends Component {
 
         <div className='sb-user-name'>
           <Avatar size={60} className='sb-avatar' >
-            {this.state.user.name.charAt(0).toUpperCase()}
+            { this.state.user
+              ? this.state.user.name.charAt(0).toUpperCase()
+              : 'Convidado'}
           </Avatar>
 
-          <span>Olá {this.state.user.name}</span>
+          <span>
+            Olá { this.state.user
+                      ? this.state.user.name
+                      : 'Convidado'
+                }
+          </span>
         </div>
 
         <Divider />
