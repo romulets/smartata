@@ -1,5 +1,7 @@
 package romulets.smartata.service;
 
+import java.util.Set;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import romulets.smartata.model.Topic;
@@ -14,6 +16,8 @@ public interface UserService extends UserDetailsService {
 	public User findByUsername(String username);
 	
 	public User getLoggedUser();
+	
+	Set<Topic> findFavoritedTopics();
 	
 	public void create(User user);
 	

@@ -14,6 +14,14 @@ export default class TopicService {
             })
   }
 
+  static getFavoritesTopics() {
+    return fetch(TOPIC_URL + '/favorites', this._auth.getGetHeader())
+            .then(r => {
+              if (r.status === 200) return r.json()
+              throw r.json()
+            })
+  }
+
   static getTopic(id) {
     return fetch(TOPIC_URL + '/' + id, this._auth.getGetHeader())
             .then(r => {

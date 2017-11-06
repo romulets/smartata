@@ -4,6 +4,8 @@ import FABBar from '../../ui/FABBar'
 import SideBar from '../../ui/SideBar'
 import CollapsedTopic from '../../ui/CollapsedTopic'
 
+import TopicService from '../../service/TopicService'
+
 class Favorites extends Component {
 
   constructor (props) {
@@ -12,6 +14,16 @@ class Favorites extends Component {
     this.state = {
       topics: []
     }
+  }
+
+  componentDidMount () {
+    this.getTopics()
+  }
+
+  getTopics () {
+    TopicService.getFavoritesTopics()
+      .then(topics => this.setState({ topics }))
+      .catch(console.error)
   }
 
   render () {

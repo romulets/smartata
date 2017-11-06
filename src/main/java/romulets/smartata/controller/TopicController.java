@@ -1,5 +1,6 @@
 package romulets.smartata.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import romulets.smartata.model.Topic;
 import romulets.smartata.response.TopicFavoritedResponse;
 import romulets.smartata.service.TopicService;
+import romulets.smartata.service.UserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/topics")
 public class TopicController {
 
+	@Autowired
+	private UserService userService;
+	
 	@Autowired
 	private TopicService topicService;
 
@@ -42,6 +47,11 @@ public class TopicController {
 		}
 	}
 
+	@RequestMapping(path = "/favorites", method = RequestMethod.GET)
+	public List<Topic> getFavorites() {
+		return new ArrayList<>(userService.findFavoritedTopics());
+	}
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Topic getOne(@PathVariable("id") int id) {
 		return topicService.findById(id);

@@ -3,6 +3,7 @@ package romulets.smartata.service;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,13 @@ public class UserServiceImpl implements UserService {
 		
 		return loggedUser;
 	}
+	
+	@Override
+	public Set<Topic> findFavoritedTopics() {
+		User user = getLoggedUser();
+		refreshFavoriteTopicsList(user);
+		return user.getFavoriteTopics();
+	}
 
 	private void refreshFavoriteTopicsList(User user) {
 		try {
@@ -125,8 +133,6 @@ public class UserServiceImpl implements UserService {
 			favorite(topic);
 			return true;
 		}
-	}
-	
-	
+	}	
 
 }
