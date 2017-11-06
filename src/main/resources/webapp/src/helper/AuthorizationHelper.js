@@ -28,9 +28,14 @@ export default class AuthorizationHelper {
   }
 
   getPostHeader (obj) {
+    let headers = this.getPostHeaderNoBody()
+    headers.body = JSON.stringify(obj)
+    return headers
+  }
+
+  getPostHeaderNoBody () {
     return {
       method: 'POST',
-      body: JSON.stringify(obj),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

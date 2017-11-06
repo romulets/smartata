@@ -85,31 +85,35 @@ public class UserServiceImpl implements UserService {
 		return loggedUser;
 	}
 
-	private void refreshFavoriteTopicsList() {
+	private void refreshFavoriteTopicsList(User user) {
 		try {
-			getLoggedUser().getFavoriteTopics();
+			user.getFavoriteTopics().size();
 		} catch (LazyInitializationException e) {
-			User user = getLoggedUser();
 			user.setFavoriteTopics(topicRepository.favoritedBy(user));	
 		}		
 	}
 	
 	@Override
 	public boolean isFavorited(Topic topic) {
-		refreshFavoriteTopicsList();
-		return getLoggedUser().getFavoriteTopics().contains(topic);
+		User user = getLoggedUser();
+		refreshFavoriteTopicsList(user);
+		return user.getFavoriteTopics().contains(topic);
 	}
 
 	@Override
 	public void favorite(Topic topic) {
-		refreshFavoriteTopicsList();
-		getLoggedUser().getFavoriteTopics().add(topic);		
+		User user = getLoggedUser();
+		refreshFavoriteTopicsList(user);
+		user.getFavoriteTopics().add(topic);
+		userRepository.save(user);
 	}
 
 	@Override
 	public void unfavorite(Topic topic) {
-		refreshFavoriteTopicsList();
-		getLoggedUser().getFavoriteTopics().remove(topic);		
+		User user = getLoggedUser();
+		refreshFavoriteTopicsList(user);
+		user.getFavoriteTopics().remove(topic);
+		userRepository.save(user);		
 	}
 
 	@Override

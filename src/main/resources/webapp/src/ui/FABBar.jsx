@@ -5,9 +5,11 @@ import Dialog from 'material-ui/Dialog'
 import { Link } from 'react-router-dom'
 import FlatButton from 'material-ui/FlatButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
+import ToggleStar from 'material-ui/svg-icons/toggle/star'
 import ActionDelete from 'material-ui/svg-icons/action/delete'
 import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ToggleStarBorder from 'material-ui/svg-icons/toggle/star-border'
 
 import './style/FABBar.css'
 
@@ -72,7 +74,7 @@ class FABBar extends Component {
           <ActionDelete />
         </FloatingActionButton>
 
-        <Link to={'/topic/edit/' + this.props.topicId}>
+        <Link to={'/topic/edit/' + this.props.topic.id}>
           <FloatingActionButton mini className='fab-edit-topic'>
             <EditorModeEdit />
           </FloatingActionButton>
@@ -81,10 +83,21 @@ class FABBar extends Component {
     )
   }
 
+  renderFavoriteButton () {
+    if (this.props.topic === undefined) return
+
+    return (
+      <FloatingActionButton mini className='fab-fav-topic' onClick={this.props.onFavoritePressed}>
+        { this.props.topic.favorited ? <ToggleStar /> : <ToggleStarBorder /> }
+      </FloatingActionButton>
+    )
+  }
+
   render () {
     return (
       <div className='fab-bar'>
 
+        {this.renderFavoriteButton()}
         {this.renderEditableButtons()}
 
         <Link to='/topic/add'>
@@ -100,8 +113,9 @@ class FABBar extends Component {
 
 FABBar.propTypes = {
   editMode: PropTypes.bool,
-  topicId: PropTypes.number,
-  onConfirmDelete: PropTypes.func
+  topic: PropTypes.object,
+  onConfirmDelete: PropTypes.func,
+  onFavoritePressed: PropTypes.func
 }
 
 export default FABBar

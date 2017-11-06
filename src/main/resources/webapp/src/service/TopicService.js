@@ -46,4 +46,13 @@ export default class TopicService {
             })
   }
 
+  static favoriteTopic(id) {
+    const url = TOPIC_URL + '/' + id + '/favorite'
+    return fetch(url, this._auth.getPostHeaderNoBody())
+            .then(r => {
+              if (r.status === 200) return r.json()
+              throw r.json()
+            })
+  }
+
 }

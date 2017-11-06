@@ -39,3 +39,9 @@
   top: 5px;
   font-size: 0.8em
 }
+
+.fab-fav-topic {
+  position: absolute;
+  bottom: 180px;
+  left: 7px;
+}

@@ -72,7 +72,7 @@ public class Topic {
 	
 	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.TRUE)
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "favoriteTopics", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "favoriteTopics", fetch = FetchType.LAZY)
 	private Set<User> favoritedBy;
 
 	public int getId() {
@@ -157,12 +157,21 @@ public class Topic {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}			
+		
 		if (obj instanceof Topic) {
 			Topic topic = (Topic) obj;
 			return this.id == topic.id;
 		}
 			
 		return super.equals(obj);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Integer.valueOf(id).hashCode();
 	}
 	
 }

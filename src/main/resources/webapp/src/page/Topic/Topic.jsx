@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import Snackbar from 'material-ui/Snackbar'
 import { Link, Redirect } from 'react-router-dom'
 import CircularProgress from 'material-ui/CircularProgress'
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back'
@@ -21,6 +22,8 @@ class Topic extends Component {
     this.handleMethodsBinds()
 
     this.state = {
+      showFavoriteSnackBar: false,
+      favoriteMessage: '',
       topicDeleted: false,
       allowEdition: false,
       topic: {}
@@ -29,6 +32,7 @@ class Topic extends Component {
 
   handleMethodsBinds () {
     this.deleteTopic = this.deleteTopic.bind(this)
+    this.favoriteTopic = this.favoriteTopic.bind(this)
   }
 
   deleteTopic () {
@@ -38,6 +42,31 @@ class Topic extends Component {
 
     TopicService.deleteTopic(topic.id)
       .then(() => this.setState({ topicDeleted: true }))
+      .catch(console.error)
+  }
+
+  favoriteTopic () {
+    const { topic } = this.state
+
+    if (topic.id === undefined) return
+
+    TopicService.favoriteTopic(topic.id)
+      .then(r => {
+        topic.favorited = r.favorite
+
+        let message
+        if (topic.favorited) {
+          message = 'Tópico adicionado aos favoritos'
+        } else {
+          message = 'Tópico removido dos favoritos'
+        }
+
+        this.setState({
+          topic,
+          showFavoriteSnackBar: true,
+          favoriteMessage: message
+        })
+      })
       .catch(console.error)
   }
 
@@ -51,7 +80,8 @@ class Topic extends Component {
     .then(topic => {
       UserService.getUser().then(u => this.setState({
         topic,
-        allowEdition: topic.createdBy.id === u.id
+        allowEdition: topic.createdBy.id === u.id,
+        showFavoriteSnackBar: false
       }))
     })
   }
@@ -75,8 +105,9 @@ class Topic extends Component {
 
         <FABBar
           editMode={this.state.allowEdition}
-          topicId={topic.id || -1}
-          onConfirmDelete={this.deleteTopic} />
+          topic={topic.id ? topic : undefined}
+          onConfirmDelete={this.deleteTopic}
+          onFavoritePressed={this.favoriteTopic} />
       </div>
     )
   }
@@ -104,6 +135,12 @@ class Topic extends Component {
         </div>
 
         <TopicContent content={topic.content} />
+
+        <Snackbar
+          open={this.state.showFavoriteSnackBar}
+          message={this.state.favoriteMessage}
+          autoHideDuration={6000} />
+
       </div>
     )
   }

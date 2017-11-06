@@ -65,6 +65,12 @@ public class TopicServiceImpl implements TopicService {
 	@Override
 	public Topic findById(int id) {
 		Topic topic = topicRepo.findOne(id);
+		
+		if (topic != null) {
+			boolean isFavorited = userService.isFavorited(topic);
+			topic.setFavorited(isFavorited);	
+		}		
+		
 		return topic;
 	}
 
@@ -87,8 +93,9 @@ public class TopicServiceImpl implements TopicService {
 		if (oldTopic == null){
 			throw new EntityNotFoundException("topic", new Integer(topic.getId()));
 		}			
+	
 		
-		if (oldTopic.getCreatedBy().getUsername() != userService.getLoggedUser().getUsername()) {
+		if (!isTopicOwnedByLoggedUser(oldTopic)) {
 			throw new SmartataException("Topic not owned by logged user"); 
 		}
 		
@@ -98,6 +105,13 @@ public class TopicServiceImpl implements TopicService {
 		topic.setCreatedBy(oldTopic.getCreatedBy());
 		
 		topicRepo.save(topic);
+	}
+	
+	private boolean isTopicOwnedByLoggedUser(Topic topic) {
+		return topic.getCreatedBy()
+				.getUsername()
+				.trim()
+				.equals(userService.getLoggedUser().getUsername().trim());
 	}
 
 	@Override

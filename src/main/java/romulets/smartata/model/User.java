@@ -68,7 +68,7 @@ public class User {
 
 	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.TRUE)
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "favorite_topics", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "topic_id"))
 	private Set<Topic> favoriteTopics;
 
@@ -155,6 +155,25 @@ public class User {
 
 	public void setCreatedTopics(Set<Topic> createdTopics) {
 		this.createdTopics = createdTopics;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj instanceof Topic) {
+			User user = (User) obj;
+			return this.id == user.id;
+		}
+
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		return Integer.valueOf(id).hashCode();
 	}
 
 }
