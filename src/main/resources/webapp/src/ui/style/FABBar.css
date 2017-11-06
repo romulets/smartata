@@ -25,3 +25,17 @@
   top: 5px;
   font-size: 0.8em
 }
+
+.fab-delete-topic {
+  position: absolute;
+  bottom: 125px;
+  left: 7px;
+}
+
+.fab-delete-topic:hover::before {
+  content: 'Deletar T\F3pico';
+  position: absolute;
+  right: 45px;
+  top: 5px;
+  font-size: 0.8em
+}

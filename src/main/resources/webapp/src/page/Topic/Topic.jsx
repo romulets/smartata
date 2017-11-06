@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import CircularProgress from 'material-ui/CircularProgress'
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back'
 
@@ -18,11 +18,27 @@ class Topic extends Component {
 
   constructor (props) {
     super(props)
+    this.handleMethodsBinds()
 
     this.state = {
+      topicDeleted: false,
       allowEdition: false,
       topic: {}
     }
+  }
+
+  handleMethodsBinds () {
+    this.deleteTopic = this.deleteTopic.bind(this)
+  }
+
+  deleteTopic () {
+    const { topic } = this.state
+
+    if (topic.id === undefined) return
+
+    TopicService.deleteTopic(topic.id)
+      .then(() => this.setState({ topicDeleted: true }))
+      .catch(console.error)
   }
 
   componentDidMount () {
@@ -41,7 +57,11 @@ class Topic extends Component {
   }
 
   render () {
-    const { topic } = this.state
+    const { topic, topicDeleted } = this.state
+
+    if (topicDeleted) {
+      return <Redirect to='/topics' />
+    }
 
     return (
       <div>
@@ -53,7 +73,10 @@ class Topic extends Component {
           : this.renderPageBody(topic) }
         </div>
 
-        <FABBar editMode={this.state.allowEdition} topicId={topic.id || -1} />
+        <FABBar
+          editMode={this.state.allowEdition}
+          topicId={topic.id || -1}
+          onConfirmDelete={this.deleteTopic} />
       </div>
     )
   }

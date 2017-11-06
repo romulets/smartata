@@ -102,9 +102,14 @@ public class TopicServiceImpl implements TopicService {
 
 	@Override
 	public void delete(int id) {
-		if (!topicExists(id))
-			throw new EntityNotFoundException("topic", new Integer(id));
+		Topic topic = findById(id);
 		
+		if (topic == null){
+			throw new EntityNotFoundException("topic", new Integer(id));
+		}			
+		
+		topic.setTags(new HashSet<>());
+		topicRepo.save(topic);		
 		topicRepo.delete(id);
 	}
 	

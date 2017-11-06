@@ -38,4 +38,12 @@ export default class TopicService {
             })
   }
 
+  static deleteTopic(id) {
+    return fetch(TOPIC_URL + '/' + id, this._auth.getDeleteHeader())
+            .then(r => {
+              if (r.status === 200) return
+              throw r.json()
+            })
+  }
+
 }

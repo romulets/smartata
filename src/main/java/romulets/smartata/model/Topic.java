@@ -59,7 +59,7 @@ public class Topic {
 	@JoinColumn(name = "category_id")
 	private Category category;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
 	@JoinTable(name = "topic_tag", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "tag_key"))
 	private Set<Tag> tags;
 

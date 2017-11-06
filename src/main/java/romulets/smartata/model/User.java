@@ -62,19 +62,19 @@ public class User {
 
 	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.TRUE)
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
 	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.TRUE)
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
 	@JoinTable(name = "favorite_topics", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "topic_id"))
 	private Set<Topic> favoriteTopics;
 
 	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.TRUE)
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "createdBy", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "createdBy", fetch = FetchType.LAZY)
 	private Set<Topic> createdTopics;
 
 	public int getId() {
