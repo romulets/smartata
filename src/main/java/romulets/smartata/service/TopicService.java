@@ -25,5 +25,6 @@ public interface TopicService {
 	
 	void delete(int id);	
 	
+	boolean toogleFavorite(int id);
 	
 }

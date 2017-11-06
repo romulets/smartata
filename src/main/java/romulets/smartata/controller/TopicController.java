@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import romulets.smartata.model.Topic;
+import romulets.smartata.response.TopicFavoritedResponse;
 import romulets.smartata.service.TopicService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -63,4 +64,11 @@ public class TopicController {
 	public void delete(@PathVariable("id") int id) {
 		topicService.delete(id);
 	}
+
+	@RequestMapping(value = "/{id}/favorite", method = RequestMethod.POST)
+	public TopicFavoritedResponse favorite(@PathVariable("id") int id) {
+		boolean isFavorited = topicService.toogleFavorite(id);
+		return new TopicFavoritedResponse(isFavorited);
+	}
+
 }

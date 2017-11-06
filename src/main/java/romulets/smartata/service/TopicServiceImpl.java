@@ -64,19 +64,19 @@ public class TopicServiceImpl implements TopicService {
 
 	@Override
 	public Topic findById(int id) {
-		return topicRepo.findOne(id);
+		Topic topic = topicRepo.findOne(id);
+		return topic;
 	}
 
 	@Override
 	public void create(Topic topic) {
 		if (topicExists(topic.getId()))
 			throw new EntityAlreadyExistException("topic", new Integer(topic.getId()));
-		
+				
 		refreshCategory(topic);
 		refreshTags(topic);
 		topic.setCreatedAt(new Date());
-		topic.setCreatedBy(userService.getLoggedUser());
-		
+		topic.setCreatedBy(userService.getLoggedUser());		
 		topicRepo.save(topic);
 	}
 
@@ -109,7 +109,11 @@ public class TopicServiceImpl implements TopicService {
 		}			
 		
 		topic.setTags(new HashSet<>());
+		topic.setFavoritedBy(new HashSet<>());
+		topic.setCategory(null);
+		topic.setCreatedBy(null);
 		topicRepo.save(topic);		
+		
 		topicRepo.delete(id);
 	}
 	
@@ -144,6 +148,12 @@ public class TopicServiceImpl implements TopicService {
 		}
 		
 		topic.setTags(tags);
+	}
+
+	@Override
+	public boolean toogleFavorite(int id) {
+		Topic topic = findById(id);
+		return userService.toogleFavorite(topic);
 	}
 
 }

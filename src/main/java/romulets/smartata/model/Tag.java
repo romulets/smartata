@@ -43,5 +43,9 @@ public class Tag {
 		key = key.toLowerCase();
 		return key;
 	}
-
+	
+	@Override
+	public String toString() {
+		return String.format("[%s] %s", key, name);
+	}
 }

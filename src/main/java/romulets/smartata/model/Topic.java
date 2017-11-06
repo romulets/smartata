@@ -18,10 +18,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -49,6 +53,9 @@ public class Topic {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at")
 	private Date updatedAt;
+	
+	@Transient
+	private boolean favorited;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "created_by")
@@ -59,9 +66,14 @@ public class Topic {
 	@JoinColumn(name = "category_id")
 	private Category category;
 
-	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "topic_tag", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "tag_key"))
 	private Set<Tag> tags;
+	
+	@JsonIgnore
+	@LazyCollection(LazyCollectionOption.TRUE)
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "favoriteTopics", fetch = FetchType.LAZY)
+	private Set<User> favoritedBy;
 
 	public int getId() {
 		return id;
@@ -103,6 +115,14 @@ public class Topic {
 		this.updatedAt = updatedAt;
 	}
 
+	public boolean isFavorited() {
+		return favorited;
+	}
+
+	public void setFavorited(boolean favorited) {
+		this.favorited = favorited;
+	}
+
 	public User getCreatedBy() {
 		return createdBy;
 	}
@@ -127,4 +147,22 @@ public class Topic {
 		this.tags = tags;
 	}
 
+	public Set<User> getFavoritedBy() {
+		return favoritedBy;
+	}
+
+	public void setFavoritedBy(Set<User> favoritedBy) {
+		this.favoritedBy = favoritedBy;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Topic) {
+			Topic topic = (Topic) obj;
+			return this.id == topic.id;
+		}
+			
+		return super.equals(obj);
+	}
+	
 }
