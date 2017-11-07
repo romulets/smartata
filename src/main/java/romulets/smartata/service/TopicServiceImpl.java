@@ -51,9 +51,9 @@ public class TopicServiceImpl implements TopicService {
 	}
 
 	@Override
-	public List<Topic> findByTag(String key) {
-		Tag tag = tagRepo.getOne(key);
-		return topicRepo.taggedWith(tag);
+	public List<Topic> createdByLoggedUser() {
+		User user = userService.getLoggedUser();
+		return topicRepo.createdBy(user);
 	}
 	
 	@Override
@@ -62,6 +62,12 @@ public class TopicServiceImpl implements TopicService {
 		return topicRepo.inCategory(category);
 	}
 
+	@Override
+	public List<Topic> findByTag(String key) {
+		Tag tag = tagRepo.getOne(key);
+		return topicRepo.taggedWith(tag);
+	}
+	
 	@Override
 	public Topic findById(int id) {
 		Topic topic = topicRepo.findOne(id);

@@ -17,6 +17,8 @@ public interface TopicService {
 	
 	List<Topic> findByCategory(int id);
 	
+	List<Topic> createdByLoggedUser();
+	
 	Topic findById(int id);
 	
 	void create(Topic topic);

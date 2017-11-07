@@ -11,9 +11,8 @@ class Logout extends Component {
   }
 
   render () {
-    return (
-      <Redirect to='/' />
-    )
+    window.location.href = '/'
+    return <Redirect to='/' />
   }
 
 }

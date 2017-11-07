@@ -52,6 +52,11 @@ public class TopicController {
 		return new ArrayList<>(userService.findFavoritedTopics());
 	}
 	
+	@RequestMapping(value = "/owned", method = RequestMethod.GET)
+	public List<Topic> owned() {
+		return topicService.createdByLoggedUser();
+	}
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Topic getOne(@PathVariable("id") int id) {
 		return topicService.findById(id);

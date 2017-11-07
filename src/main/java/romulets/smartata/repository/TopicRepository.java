@@ -26,7 +26,7 @@ public interface TopicRepository extends JpaRepository<Topic, Integer> {
 			+ "or ta.name LIKE %:search% ")
 	List<Topic> filter(@Param("search") String search);
 	
-	@Query("SELECT t FROM Topic t WHERE :user in (t.createdBy )")
+	@Query("SELECT t FROM Topic t WHERE :user in (t.createdBy)")
 	List<Topic> createdBy(@Param("user") User user);
 	
 	@Query("SELECT t FROM Topic t WHERE :user in (t.favoritedBy)")
