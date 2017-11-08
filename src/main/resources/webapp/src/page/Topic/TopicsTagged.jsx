@@ -4,6 +4,7 @@ import FABBar from '../../ui/FABBar'
 import SideBar from '../../ui/SideBar'
 import CollapsedTopic from '../../ui/CollapsedTopic'
 
+import TagService from '../../service/TagService'
 import TopicService from '../../service/TopicService'
 
 class TopicsTagged extends Component {
@@ -12,16 +13,26 @@ class TopicsTagged extends Component {
     super(props)
 
     this.state = {
+      tag: {},
       topics: []
     }
   }
 
   componentDidMount () {
-    this.getTopics()
+    const { key } = this.props.match.params
+
+    this.getTopics(key)
+    this.getTag(key)
   }
 
-  getTopics () {
-    TopicService.getFavoritesTopics()
+  getTag (key) {
+    TagService.getTag(key)
+      .then(tag => this.setState({ tag }))
+      .catch(console.error)
+  }
+
+  getTopics (tagKey) {
+    TopicService.getTaggedTopics(tagKey)
       .then(topics => this.setState({ topics }))
       .catch(console.error)
   }
@@ -32,7 +43,7 @@ class TopicsTagged extends Component {
         <SideBar />
 
         <div className='container-right'>
-          <h2>Favoritos</h2>
+          <h2>Tag #{this.state.tag.name || ''}</h2>
 
           { this.state.topics.map(t => <CollapsedTopic topic={t} key={t.id} />) }
         </div>

@@ -5,6 +5,7 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -20,6 +21,30 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class PersistenceJPAConfig {
 
+	@Value("${spring.datasource.driver}")
+	private String dataSourceDriver;
+	
+	@Value("${spring.datasource.url}")
+	private String dataSourceUrl;
+	
+	@Value("${spring.datasource.username}")
+	private String dataSourceUsername;
+	
+	@Value("${spring.datasource.password}")
+	private String dataSourcePassword;
+	
+	@Value("${spring.jpa.show-sql}")
+	private String showSql;
+	
+	@Value("${spring.jpa.hibernate.ddl-auto}")
+	private String ddlAuto;
+	
+	@Value("${spring.jpa.hibernate.naming-strategy}")
+	private String namingStrategy;
+	
+	@Value("${spring.jpa.properties.hibernate.dialect}")
+	private String dialect;
+	
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -36,10 +61,10 @@ public class PersistenceJPAConfig {
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/smartata");
-		dataSource.setUsername("root");
-		dataSource.setPassword("123123");
+		dataSource.setDriverClassName(dataSourceDriver);
+		dataSource.setUrl(dataSourceUrl);
+		dataSource.setUsername(dataSourceUsername);
+		dataSource.setPassword(dataSourcePassword);
 		return dataSource;
 	}
 
@@ -47,7 +72,6 @@ public class PersistenceJPAConfig {
 	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(emf);
-
 		return transactionManager;
 	}
 
@@ -58,10 +82,10 @@ public class PersistenceJPAConfig {
 
 	Properties additionalProperties() {
 		Properties properties = new Properties();
-		properties.setProperty("spring.jpa.show-sql", "false");
-		properties.setProperty("spring.jpa.hibernate.ddl-auto", "update");
-		properties.setProperty("spring.jpa.hibernate.naming-strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
-		properties.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+		properties.setProperty("spring.jpa.show-sql", showSql);
+		properties.setProperty("spring.jpa.hibernate.ddl-auto", ddlAuto);
+		properties.setProperty("spring.jpa.hibernate.naming-strategy", namingStrategy);
+		properties.setProperty("spring.jpa.properties.hibernate.dialect", dialect);
 		return properties;
 	}
 }

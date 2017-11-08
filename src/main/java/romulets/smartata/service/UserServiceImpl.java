@@ -5,30 +5,34 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.transaction.Transactional;
-
 import org.hibernate.Hibernate;
+import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import romulets.smartata.model.Role;
 import romulets.smartata.model.Topic;
 import romulets.smartata.model.User;
 import romulets.smartata.repository.RoleRepository;
+import romulets.smartata.repository.TopicRepository;
 import romulets.smartata.repository.UserRepository;
 
+@Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UserRepository userRepo;
 
 	@Autowired
-	private RoleRepository roleRepository;
+	private RoleRepository roleRepo;
+	
+	private TopicRepository topicRepo;
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -37,17 +41,17 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User findById(int id) {
-		return userRepository.getOne(id);
+		return userRepo.getOne(id);
 	}
 
 	@Override
 	public User findByEmail(String email) {
-		return userRepository.findByEmail(email);
+		return userRepo.findByEmail(email);
 	}
 	
 	@Override
 	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
+		return userRepo.findByUsername(username);
 	}
 
 	@Override
@@ -68,9 +72,9 @@ public class UserServiceImpl implements UserService {
 	public void create(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setActive(1);
-		Role userRole = roleRepository.findByRole("ADMIN");
+		Role userRole = roleRepo.findByRole("ADMIN");
 		user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
-		userRepository.save(user);
+		userRepo.save(user);
 
 	}
 
@@ -93,7 +97,12 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	private void refreshFavoriteTopicsList(User user) {
-		Hibernate.initialize(user.getFavoriteTopics());
+		try {
+			Hibernate.initialize(user.getFavoriteTopics());	
+		} catch (LazyInitializationException e) {
+			user.setFavoriteTopics(topicRepo.favoritedBy(user));
+		}
+		
 	}
 	
 	@Override
@@ -108,7 +117,7 @@ public class UserServiceImpl implements UserService {
 		User user = getLoggedUser();
 		refreshFavoriteTopicsList(user);
 		user.getFavoriteTopics().add(topic);
-		userRepository.save(user);
+		userRepo.save(user);
 	}
 
 	@Override
@@ -116,7 +125,7 @@ public class UserServiceImpl implements UserService {
 		User user = getLoggedUser();
 		refreshFavoriteTopicsList(user);
 		user.getFavoriteTopics().remove(topic);
-		userRepository.save(user);		
+		userRepo.save(user);		
 	}
 
 	@Override

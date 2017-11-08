@@ -5,6 +5,7 @@ import SideBar from '../../ui/SideBar'
 import CollapsedTopic from '../../ui/CollapsedTopic'
 
 import TopicService from '../../service/TopicService'
+import CategoryService from '../../service/CategoryService'
 
 class TopicsInCategory extends Component {
 
@@ -12,16 +13,26 @@ class TopicsInCategory extends Component {
     super(props)
 
     this.state = {
+      category: {},
       topics: []
     }
   }
 
   componentDidMount () {
-    this.getTopics()
+    const { id } = this.props.match.params
+
+    this.getCategory(id)
+    this.getTopics(id)
   }
 
-  getTopics () {
-    TopicService.getFavoritesTopics()
+  getCategory (id) {
+    CategoryService.getCategory(id)
+      .then(category => this.setState({ category }))
+      .catch(console.error)
+  }
+
+  getTopics (categoryId) {
+    TopicService.getTopicsInCategory(categoryId)
       .then(topics => this.setState({ topics }))
       .catch(console.error)
   }
@@ -32,7 +43,7 @@ class TopicsInCategory extends Component {
         <SideBar />
 
         <div className='container-right'>
-          <h2>Favoritos</h2>
+          <h2>Categoria {this.state.category.name || ''}</h2>
 
           { this.state.topics.map(t => <CollapsedTopic topic={t} key={t.id} />) }
         </div>

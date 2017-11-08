@@ -30,6 +30,21 @@ export default class TopicService {
             })
   }
 
+  static getTopicsInCategory(id) {
+    return fetch(TOPIC_URL + '/category/' + id, this._auth.getGetHeader())
+            .then(r => {
+              if (r.status === 200) return r.json()
+              throw r.json()
+            })
+  }
+
+  static getTaggedTopics(key) {
+    return fetch(TOPIC_URL + '/tag/' + key, this._auth.getGetHeader())
+            .then(r => {
+              if (r.status === 200) return r.json()
+              throw r.json()
+            })
+  }
 
   static getTopic(id) {
     return fetch(TOPIC_URL + '/' + id, this._auth.getGetHeader())
