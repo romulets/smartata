@@ -5,14 +5,26 @@ import { Redirect } from 'react-router-dom'
 
 class Logout extends Component {
 
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      redirect: false
+    }
+  }
+
   componentDidMount () {
     const { cookies } = this.props
     cookies.remove('authorizationToken')
+    this.setState({ redirect: true })
   }
 
   render () {
-    window.location.href = '/'
-    return <Redirect to='/' />
+    if (this.state.redirect) {
+      return <Redirect to='/' />
+    } else {
+      return <div />
+    }
   }
 
 }

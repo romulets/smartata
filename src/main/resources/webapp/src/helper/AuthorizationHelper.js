@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie'
 
 export default class AuthorizationHelper {
 
@@ -6,15 +7,7 @@ export default class AuthorizationHelper {
   }
 
   getTokenInCookies () {
-    const prefix = 'authorizationToken='
-    const cookies = document.cookie
-                  .split(';')
-                  .map(s => window.decodeURI(s.trim()))
-                  .filter(s => s.startsWith(prefix))
-                  .map(s => s.replace(prefix, ''))
-
-    if (cookies.length === 0) return null
-    return cookies[0]
+    return Cookies.get('authorizationToken')
   }
 
   getGetHeader () {

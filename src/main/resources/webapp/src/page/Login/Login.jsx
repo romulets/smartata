@@ -95,6 +95,7 @@ class Login extends Component {
   render () {
     if (this.state.successfullAuthentication) {
       window.location.href = '/topics'
+      return <Redirect to='/topics' />
     }
 
     return (

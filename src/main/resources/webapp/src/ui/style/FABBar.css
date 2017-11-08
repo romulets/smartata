@@ -4,7 +4,7 @@
   right: 20px;
 }
 
-.fab-add-topic:hover::before {
+/*.fab-add-topic:hover::before {
   content: 'Adicionar T\F3pico';
   position: absolute;
   right: 65px;
@@ -44,4 +44,4 @@
   position: absolute;
   bottom: 180px;
   left: 7px;
-}
+}*/

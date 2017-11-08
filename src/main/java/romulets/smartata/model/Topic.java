@@ -57,7 +57,7 @@ public class Topic {
 	@Transient
 	private boolean favorited;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "created_by")
 	private User createdBy;
 
