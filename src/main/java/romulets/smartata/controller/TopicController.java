@@ -29,24 +29,25 @@ public class TopicController {
 	private TopicService topicService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<Topic> getAll(@RequestParam(value = "search", required = false) String search,
-			@RequestParam(value = "user", required = false) Integer user,
-			@RequestParam(value = "category", required = false) Integer category,
-			@RequestParam(value = "tag", required = false) String tag) {
+	public List<Topic> getAll(@RequestParam(value = "search", required = false) String search) {
 
 		if (search != null) {
 			return topicService.filter(search);
-		} else if (user != null) {
-			return topicService.findByUser(user);
-		} else if (category != null) {
-			return topicService.findByCategory(category);
-		} else if (tag != null) {
-			return topicService.findByTag(tag);
 		} else {
 			return topicService.findAll();
 		}
 	}
 
+	@RequestMapping(path = "/category/{category}", method = RequestMethod.GET)
+	public List<Topic> getInCategory(@PathVariable("category") int category) {
+		return topicService.findByCategory(category);
+	}
+	
+	@RequestMapping(path = "/tag/{tag}", method = RequestMethod.GET)
+	public List<Topic> getTagged(@PathVariable("tag") String tag) {
+		return topicService.findByTag(tag);
+	}
+	
 	@RequestMapping(path = "/favorites", method = RequestMethod.GET)
 	public List<Topic> getFavorites() {
 		return new ArrayList<>(userService.findFavoritedTopics());

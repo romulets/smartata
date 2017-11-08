@@ -13,6 +13,8 @@ import Register from './page/Register/Register'
 import AllTopics from './page/Topic/AllTopics'
 import Favorites from './page/Topic/Favorites'
 import Published from './page/Topic/Published'
+import TopicsInCategory from './page/Topic/TopicsInCategory'
+import TopicsTagged from './page/Topic/TopicsTagged'
 
 import './App.css'
 
@@ -34,6 +36,8 @@ class App extends Component {
 
               <Route path='/topic/edit/:id' component={EditTopic} />
               <Route path='/topic/:id' component={Topic} />
+              <Route path='/category/:id' component={TopicsInCategory} />
+              <Route path='/tag/:key' component={TopicsTagged} />
             </Switch>
           </Router>
         </MuiThemeProvider>

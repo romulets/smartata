@@ -4,44 +4,42 @@
   right: 20px;
 }
 
-/*.fab-add-topic:hover::before {
+.fab-bar ul {
+  list-style: none;
+}
+
+.fab-bar ul li {
+  margin-top: 10px;
+}
+
+.fab-mini {
+  position: relative;
+  left: 7px;
+}
+
+.fab-add-topic:hover::before {
   content: 'Adicionar T\F3pico';
   position: absolute;
   right: 65px;
+  bottom: 30px;
+  font-size: 0.8em
+}
+
+.fab-mini:hover::before {
+  position: absolute;
+  right: 60px;
   top: 5px;
   font-size: 0.8em
 }
 
-.fab-edit-topic {
-  position: absolute;
-  bottom: 70px;
-  left: 7px;
+.fab-fav-topic:hover::before {
+  content: 'Favoritar T\F3pico';
 }
 
 .fab-edit-topic:hover::before {
   content: 'Editar T\F3pico';
-  position: absolute;
-  right: 45px;
-  top: 5px;
-  font-size: 0.8em
-}
-
-.fab-delete-topic {
-  position: absolute;
-  bottom: 125px;
-  left: 7px;
 }
 
 .fab-delete-topic:hover::before {
   content: 'Deletar T\F3pico';
-  position: absolute;
-  right: 45px;
-  top: 5px;
-  font-size: 0.8em
 }
-
-.fab-fav-topic {
-  position: absolute;
-  bottom: 180px;
-  left: 7px;
-}*/

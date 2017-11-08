@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.LazyInitializationException;
+import javax.transaction.Transactional;
+
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,14 +19,10 @@ import romulets.smartata.model.Role;
 import romulets.smartata.model.Topic;
 import romulets.smartata.model.User;
 import romulets.smartata.repository.RoleRepository;
-import romulets.smartata.repository.TopicRepository;
 import romulets.smartata.repository.UserRepository;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
-
-	@Autowired
-	private TopicRepository topicRepository;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -93,12 +91,9 @@ public class UserServiceImpl implements UserService {
 		return user.getFavoriteTopics();
 	}
 
+	@Transactional
 	private void refreshFavoriteTopicsList(User user) {
-		try {
-			user.getFavoriteTopics().size();
-		} catch (LazyInitializationException e) {
-			user.setFavoriteTopics(topicRepository.favoritedBy(user));	
-		}		
+		Hibernate.initialize(user.getFavoriteTopics());
 	}
 	
 	@Override

@@ -1,7 +1,6 @@
 package romulets.smartata.repository;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,9 +27,6 @@ public interface TopicRepository extends JpaRepository<Topic, Integer> {
 	
 	@Query("SELECT t FROM Topic t WHERE :user in t.createdBy")
 	List<Topic> createdBy(@Param("user") User user);
-	
-	@Query("SELECT t FROM Topic t WHERE :user in t.favoritedBy")
-	Set<Topic> favoritedBy(@Param("user") User user);
 	
 	@Query("SELECT t FROM Topic t WHERE :tag in t.tags")
 	List<Topic> taggedWith(@Param("tag") Tag tag);

@@ -44,7 +44,7 @@ class FABBar extends Component {
     this.setState({ openDeleteDialog: true })
   }
 
-  renderEditableButtons () {
+  renderDeleteModal () {
     if (!this.props.editMode) return
 
     const actions = [
@@ -60,51 +60,63 @@ class FABBar extends Component {
       />
     ]
 
-    return (
-      <div>
-        <Dialog
-          actions={actions}
-          modal={false}
-          open={this.state.openDeleteDialog}
-          onRequestClose={this.handleCloseDeleteDialog} >
-          Deletar Tópico?
-         </Dialog>
+    return <Dialog
+      actions={actions}
+      modal={false}
+      open={this.state.openDeleteDialog}
+      onRequestClose={this.handleCloseDeleteDialog} >
+      Deletar Tópico?
+     </Dialog>
+  }
 
-        <FloatingActionButton mini className='fab-delete-topic' onClick={this.handleOpenDeleteDialog}>
-          <ActionDelete />
-        </FloatingActionButton>
+  renderDeleteButton () {
+    if (!this.props.editMode) return
 
-        <Link to={'/topic/edit/' + this.props.topic.id}>
-          <FloatingActionButton mini className='fab-edit-topic'>
-            <EditorModeEdit />
-          </FloatingActionButton>
-        </Link>
-      </div>
-    )
+    return <FloatingActionButton mini onClick={this.handleOpenDeleteDialog}>
+      <ActionDelete />
+    </FloatingActionButton>
+  }
+
+  renderEditButton () {
+    if (!this.props.editMode) return
+
+    return <Link to={'/topic/edit/' + this.props.topic.id}>
+      <FloatingActionButton mini>
+        <EditorModeEdit />
+      </FloatingActionButton>
+    </Link>
   }
 
   renderFavoriteButton () {
     if (this.props.topic === undefined) return
 
-    return (
-      <FloatingActionButton mini className='fab-fav-topic' onClick={this.props.onFavoritePressed}>
-        { this.props.topic.favorited ? <ToggleStar /> : <ToggleStarBorder /> }
+    return <FloatingActionButton mini onClick={this.props.onFavoritePressed}>
+      { this.props.topic.favorited ? <ToggleStar /> : <ToggleStarBorder /> }
+    </FloatingActionButton>
+  }
+
+  renderAddButton () {
+    return <Link to='/topic/add'>
+      <FloatingActionButton secondary>
+        <ContentAdd />
       </FloatingActionButton>
-    )
+    </Link>
   }
 
   render () {
     return (
-      <div className='fab-bar'>
+      <div>
 
-        {this.renderFavoriteButton()}
-        {this.renderEditableButtons()}
+        {this.renderDeleteModal()}
 
-        <Link to='/topic/add'>
-          <FloatingActionButton secondary className='fab-add-topic'>
-            <ContentAdd />
-          </FloatingActionButton>
-        </Link>
+        <div className='fab-bar'>
+          <ul>
+            <li className='fab-mini fab-fav-topic'>{this.renderFavoriteButton()}</li>
+            <li className='fab-mini fab-delete-topic'>{this.renderDeleteButton()}</li>
+            <li className='fab-mini fab-edit-topic'>{this.renderEditButton()}</li>
+            <li className='fab-add-topic'>{this.renderAddButton()}</li>
+          </ul>
+        </div>
       </div>
     )
   }
