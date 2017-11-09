@@ -1,0 +1,14 @@
+.searchable-title {
+  position: relative;
+}
+
+.title-text {
+  display: inline-block;
+}
+
+.search-bar {
+  display: inline-block;
+  position: absolute;
+  right: 10px;
+  bottom: 0px;
+}

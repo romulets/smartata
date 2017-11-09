@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.Hibernate;
 import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +31,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private RoleRepository roleRepo;
 	
+	@Autowired
 	private TopicRepository topicRepo;
 
 	@Autowired
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	private void refreshFavoriteTopicsList(User user) {
 		try {
-			Hibernate.initialize(user.getFavoriteTopics());	
+			user.getFavoriteTopics().isEmpty();	
 		} catch (LazyInitializationException e) {
 			user.setFavoriteTopics(topicRepo.favoritedBy(user));
 		}

@@ -16,7 +16,7 @@ import romulets.smartata.model.User;
 @Repository("topicRepository")
 public interface TopicRepository extends JpaRepository<Topic, Integer> {
 	
-	@Query("SELECT t FROM Topic t "
+	@Query("SELECT DISTINCT t FROM Topic t "
 			+ "LEFT JOIN t.category c "
 			+ "LEFT JOIN t.tags ta "
 			+ "WHERE t.title LIKE %:search% "
