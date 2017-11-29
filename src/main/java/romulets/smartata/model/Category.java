@@ -50,5 +50,24 @@ public class Category {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}			
+		
+		if (obj instanceof Category) {
+			Category cat = (Category) obj;
+			return this.id == cat.id;
+		}
+			
+		return super.equals(obj);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Integer.valueOf(id).hashCode();
+	}
 
 }
